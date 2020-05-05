@@ -12,6 +12,7 @@ function Login() {
         e.preventDefault();
         let choice = document.getElementById("loginDomain");
         let domain = choice.options[choice.selectedIndex].text;
+        // remember to check the username and password to match in the db
         if (domain === "User") {
             ReactDOM.render(
                 <Router>

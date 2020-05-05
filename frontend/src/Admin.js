@@ -10,8 +10,11 @@ function Admin() {
     <Router>
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <Link to="/admin/dashboard" className="navbar-brand">Dashboard</Link>
+          <Link to="/admin" className="navbar-brand">Admin</Link>
           <ul className="navbar-nav mr-auto">
+            <li className="nav-item">
+              <Link className="nav-link" to="/admin/dashboard">Dashboard</Link>
+            </li>
             <li className="nav-item">
               <Link className="nav-link" to="/admin/shelterList">Data Collected</Link>
             </li>
