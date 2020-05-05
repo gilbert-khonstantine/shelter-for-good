@@ -1,0 +1,35 @@
+{
+  "name": "shelter-for-good",
+  "version": "1.0.0",
+  "description": "This project is inspired by NCHS Hope during Code For Good 2019. This is app serves as the prototype and it is done outside the competition.",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gilbert-khonstantine/shelter-for-good.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gilbert-khonstantine/shelter-for-good/issues"
+  },
+  "homepage": "https://github.com/gilbert-khonstantine/shelter-for-good#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "concurrently": "^5.2.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http-proxy-middleware": "^1.0.3",
+    "is-empty": "^1.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.12",
+    "nodemon": "^2.0.3",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "validator": "^13.0.0"
+  }
+}

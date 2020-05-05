@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route } from "react-router-dom";
@@ -6,9 +6,12 @@ import { Redirect } from 'react-router'
 import adminPage from './Admin';
 import userPage from './User';
 
-function Login() {
-
-    function handleSubmit(e) {
+export default class Login extends Component {
+    constructor(props) {
+        super(props);
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+    handleSubmit(e) {
         e.preventDefault();
         let choice = document.getElementById("loginDomain");
         let domain = choice.options[choice.selectedIndex].text;
@@ -37,26 +40,26 @@ function Login() {
             );
         }
     }
-    return (
-        <Router>
-            <h1> LOGIN PAGE </h1>
-            <div className="form-group">
-                <form onSubmit={handleSubmit}>
-                    <label>Username:</label>
-                    <input type="text" className="form-control" />
-                    <label>Password:</label>
-                    <input type="password" className="form-control" />
-                    <label>Domain</label>
-                    <select className="form-control" id="loginDomain">
-                        <option>User</option>
-                        <option>Admin</option>
-                    </select>
-                    <br />
-                    <input type="submit" className="btn btn-primary" value="Login" />
-                </form>
-            </div>
-        </Router >
-    )
+    render() {
+        return (
+            <Router>
+                <h1> LOGIN PAGE </h1>
+                <div className="form-group">
+                    <form onSubmit={this.handleSubmit}>
+                        <label>Email:</label>
+                        <input id="loginEmail" type="text" className="form-control" />
+                        <label>Password:</label>
+                        <input type="password" className="form-control" />
+                        <label>Domain</label>
+                        <select className="form-control" id="loginDomain">
+                            <option>User</option>
+                            <option>Admin</option>
+                        </select>
+                        <br />
+                        <input type="submit" className="btn btn-primary" value="Login" />
+                    </form>
+                </div>
+            </Router >
+        )
+    }
 }
-
-export default Login;
