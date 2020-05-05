@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Redirect } from 'react-router'
 import adminPage from './Admin';
 import userPage from './User';
@@ -42,8 +43,9 @@ export default class Login extends Component {
     }
     render() {
         return (
-            <Router>
-                <h1> LOGIN PAGE </h1>
+            <div className="container">
+                <h3> LOGIN </h3>
+                <p>Does not have account yet? sign up <Link to="/signup"> here </Link></p>
                 <div className="form-group">
                     <form onSubmit={this.handleSubmit}>
                         <label>Email:</label>
@@ -59,7 +61,7 @@ export default class Login extends Component {
                         <input type="submit" className="btn btn-primary" value="Login" />
                     </form>
                 </div>
-            </Router >
+            </div>
         )
     }
 }

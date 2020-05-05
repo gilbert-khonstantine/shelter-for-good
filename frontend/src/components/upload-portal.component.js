@@ -79,7 +79,7 @@ export default class uploadPage extends Component {
                     </div>
                     <div className="form-group">
                         <label>Photo</label>
-                        <input type="image" className="form-control" />
+                        <input type="text" className="form-control" />
                     </div>
                     <div>
                         <input type="submit" className="btn btn-primary" value="Submit" />

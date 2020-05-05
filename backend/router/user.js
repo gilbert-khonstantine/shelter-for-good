@@ -10,7 +10,7 @@ const validateLogin = require("../validation/login");
 const User = require("../models/user-model");
 
 
-router.post("/register", (req, res) => {
+router.post("/signup", (req, res) => {
     const { errors, isValid } = validateRegistration(req.body);
     // make sure input is correct
     if (!isValid) {

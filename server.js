@@ -4,10 +4,12 @@ const bodyParser = require('body-parser');
 const passport = require("passport");
 const userRouter = require("./backend/router/user")
 const adminRouter = require("./backend/router/admin")
+const cors = require('cors')
 
 app = express();
 
 //app middleware
+app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }))
 
@@ -25,7 +27,7 @@ app.use(passport.initialize());
 // Passport config
 require("./backend/config/passport")(passport);
 // Routes to call the api
-app.use("/api/users", userRouter);
+app.use("/api/user", userRouter);
 app.use("/api/admin", adminRouter)
 
 const port = process.env.PORT || 4000

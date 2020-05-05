@@ -1,16 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import { Redirect } from 'react-router'
 import './index.css';
 import * as serviceWorker from './serviceWorker';
-import Login from './Login'
+import App from "./App"
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <Route path="/login" component={Login} />
-      <Redirect to="/login" component={Login} />
+      <App />
     </Router>
   </React.StrictMode>,
   document.getElementById('root')
