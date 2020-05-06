@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -10,38 +9,65 @@ import userPage from './User';
 export default class Login extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            errors: {},
+            login: false,
+            email: "",
+            password: "",
+            domain: "User"
+        }
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.onChange = this.onChange.bind(this)
     }
+    onChange = e => {
+        this.setState({ [e.target.id]: e.target.value });
+    };
     handleSubmit(e) {
         e.preventDefault();
         let choice = document.getElementById("loginDomain");
         let domain = choice.options[choice.selectedIndex].text;
-        // remember to check the username and password to match in the db
-        if (domain === "User") {
-            ReactDOM.render(
-                <Router>
-                    <Route path="/user" component={userPage} />
-                    <Redirect to="/user" component={userPage} />
-                </Router>
-                ,
-                document.getElementById('root')
-            );
-
+        let details = {
+            email: this.state.email,
+            password: this.state.password,
+            domain: domain
         }
-
-        else if (domain === "Admin") {
-            ReactDOM.render(
-                <React.StrictMode>
+        axios.post("/api/" + domain.toLowerCase() + "/login", details)
+            .then((res) => {
+                console.log("Post Request Sent Successfully!")
+                this.setState({
+                    errors: {},
+                    login: true,
+                    domain: domain
+                })
+                localStorage.setItem("token", res.data.token)
+                localStorage.setItem("id", res.data.id)
+                localStorage.setItem("domain", res.data.domain)
+            })
+            .catch((err) => {
+                this.setState({
+                    errors: err.response.data
+                })
+            })
+    }
+    render() {
+        const { errors } = this.state;
+        if (this.state.login) {
+            if (this.state.domain === "Admin") {
+                return (
                     <Router>
                         <Route path="/admin" component={adminPage} />
                         <Redirect to="/admin" component={adminPage} />
                     </Router>
-                </React.StrictMode>,
-                document.getElementById('root')
-            );
+                )
+            }
+            else if (this.state.domain === "User") {
+                return (<Router>
+                    <Route path="/user" component={userPage} />
+                    <Redirect to="/user" component={userPage} />
+                </Router>)
+            }
         }
-    }
-    render() {
+
         return (
             <div className="container">
                 <h3> LOGIN </h3>
@@ -49,9 +75,12 @@ export default class Login extends Component {
                 <div className="form-group">
                     <form onSubmit={this.handleSubmit}>
                         <label>Email:</label>
-                        <input id="loginEmail" type="text" className="form-control" />
+                        <input id="email" type="text" className="form-control" onChange={this.onChange} />
+                        <p style={{ color: 'red' }}>{errors.email}</p>
                         <label>Password:</label>
-                        <input type="password" className="form-control" />
+                        <input id="password" type="password" className="form-control" onChange={this.onChange} />
+                        <p style={{ color: 'red' }}>{errors.password}</p>
+                        <p style={{ color: 'red' }}>{errors.passwordincorrect}</p>
                         <label>Domain</label>
                         <select className="form-control" id="loginDomain">
                             <option>User</option>

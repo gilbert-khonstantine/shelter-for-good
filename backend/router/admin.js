@@ -72,7 +72,9 @@ router.post("/login", (req, res) => {
                     (err, token) => {
                         return res.status(200).json({
                             success: true,
-                            token: "Bearer " + token
+                            token: "Bearer " + token,
+                            id: admin._id,
+                            domain: "admin"
                         });
                     }
                 );

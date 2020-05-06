@@ -6,6 +6,9 @@ import dashboardPage from "./components/dashboard.component";
 import shelterPage from "./components/shelter-list.component"
 
 function Admin() {
+  function logOut() {
+    localStorage.clear()
+  }
   return (
     <Router>
       <div className="container">
@@ -19,6 +22,13 @@ function Admin() {
               <Link className="nav-link" to="/admin/shelterList">Data Collected</Link>
             </li>
           </ul>
+          <div>
+            <ul className="navbar-nav mr-auto">
+              <li className="my-2 my-lg-0">
+                <a href="/" onClick={logOut}>Log Out</a>
+              </li>
+            </ul>
+          </div>
         </nav>
         <h1> Welcome to admin page </h1>
 

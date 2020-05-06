@@ -1,12 +1,15 @@
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-
+import { Redirect } from "react-router"
 import aboutUsPage from "./components/about-us.component"
 import uploadPage from "./components/upload-portal.component"
 import historicalPage from "./components/historical-upload.component"
-
+import LoginPage from "./Login"
 function User() {
+    function logOut() {
+        localStorage.clear()
+    }
     return (
         <Router>
             <div className="container">
@@ -23,6 +26,13 @@ function User() {
                             <Link className="nav-link" to="/user/historical-uploads">Historical Uploads</Link>
                         </li>
                     </ul>
+                    <div>
+                        <ul className="navbar-nav mr-auto">
+                            <li className="my-2 my-lg-0">
+                                <a href="/" onClick={logOut}>Log Out</a>
+                            </li>
+                        </ul>
+                    </div>
                 </nav>
                 <h1> Welcome to user page </h1>
 
