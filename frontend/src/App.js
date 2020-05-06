@@ -11,30 +11,13 @@ class App extends Component {
         if (localStorage.getItem("token")) {
             const decoded = jwt_decode(localStorage.getItem("token"));
             const currentTime = Date.now() / 1000; // to get in milliseconds
-            if (decoded.exp < currentTime) {
+            if (decoded.exp >= currentTime) {
                 return (
                     <Router>
-                        <div className="App">
-                            <Route exact path="/" component={Login} />
-                            <Route exact path="/signup" component={Signup} />
-                            <Route exact path="/login" component={Login} />
-                        </div>
+                        <Route path={localStorage.domain === "user" ? "/user" : "/admin"} component={localStorage.domain === "user" ? userPage : adminPage} />
+                        <Redirect to={localStorage.domain === "user" ? "/user" : "/admin"} component={localStorage.domain === "user" ? userPage : adminPage} />
                     </Router>
-                );
-            }
-            else {
-                if (localStorage.getItem("token") && localStorage.domain === "user") {
-                    return (<Router>
-                        <Route path="/user" component={userPage} />
-                        <Redirect to="/user" component={userPage} />
-                    </Router>)
-                }
-                else if (localStorage.getItem("token") && localStorage.domain === "admin") {
-                    return (<Router>
-                        <Route path="/admin" component={adminPage} />
-                        <Redirect to="/admin" component={adminPage} />
-                    </Router>)
-                }
+                )
             }
         }
         return (
@@ -44,7 +27,7 @@ class App extends Component {
                     <Route exact path="/signup" component={Signup} />
                     <Route exact path="/login" component={Login} />
                 </div>
-            </Router>
+            </Router >
         );
     }
 }
