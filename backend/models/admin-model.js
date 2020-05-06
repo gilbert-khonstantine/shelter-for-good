@@ -5,15 +5,15 @@ const Schema = mongoose.Schema;
 const adminSchema = new Schema({
     name: {
         type: String,
-        required: true
+        require: true
     },
     email: {
         type: String,
-        required = true
+        require: true
     },
     password: {
         type: String,
-        required: true
+        require: true
     },
     date: {
         type: Date,
