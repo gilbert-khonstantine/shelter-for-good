@@ -1,11 +1,10 @@
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import { Redirect } from "react-router"
 import aboutUsPage from "./components/about-us.component"
 import uploadPage from "./components/upload-portal.component"
 import historicalPage from "./components/historical-upload.component"
-import LoginPage from "./Login"
+
 function User() {
     function logOut() {
         localStorage.clear()

@@ -23,13 +23,13 @@ class App extends Component {
                 );
             }
             else {
-                if (localStorage.getItem("token") && localStorage.domain == "user") {
+                if (localStorage.getItem("token") && localStorage.domain === "user") {
                     return (<Router>
                         <Route path="/user" component={userPage} />
                         <Redirect to="/user" component={userPage} />
                     </Router>)
                 }
-                else if (localStorage.getItem("token") && localStorage.domain == "admin") {
+                else if (localStorage.getItem("token") && localStorage.domain === "admin") {
                     return (<Router>
                         <Route path="/admin" component={adminPage} />
                         <Redirect to="/admin" component={adminPage} />
