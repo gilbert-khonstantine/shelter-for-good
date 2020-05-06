@@ -3,8 +3,12 @@ import axios from 'axios';
 import "bootstrap/dist/css/bootstrap.min.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import { Redirect } from 'react-router'
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { signUpUser } from "../../actions/authActions";
+import classnames from "classnames";
 
-export default class Login extends Component {
+class Login extends Component {
     constructor() {
         super();
         this.state = {
@@ -19,6 +23,14 @@ export default class Login extends Component {
         this.handleSubmit = this.handleSubmit.bind(this)
         this.onChange = this.onChange.bind(this)
     }
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.errors) {
+            this.setState({
+                errors: nextProps.errors
+            });
+        }
+    }
+
     onChange = e => {
         this.setState({ [e.target.id]: e.target.value });
     };
@@ -36,20 +48,24 @@ export default class Login extends Component {
         this.setState({
             newUser
         })
-        axios.post("/api/" + domain.toLowerCase() + "/signup", newUser)
-            .then((res) => {
-                console.log("Post Request Sent Successfully!")
-                this.setState({
-                    errors: {},
-                    goToLogin: true
-                })
-            })
-            .catch((err) => {
-                this.setState({
-                    errors: err.response.data
-                })
-            })
+        this.props.signUpUser(domain, newUser, this.props.history);
+        console.log(newUser)
+        // axios.post("/api/" + domain.toLowerCase() + "/signup", newUser)
+        //     .then((res) => {
+        //         console.log("Post Request Sent Successfully!")
+        //         this.setState({
+        //             errors: {},
+        //             goToLogin: true
+        //         })
+        //     })
+        //     .catch((err) => {
+        //         this.setState({
+        //             errors: err.response.data
+        //         })
+        //     })
     };
+
+
     render() {
         const { errors } = this.state;
         if (this.state.goToLogin) {
@@ -69,46 +85,58 @@ export default class Login extends Component {
                     <form onSubmit={this.handleSubmit}>
                         <label>Name</label>
                         <input
-                            className="form-control"
                             onChange={this.onChange}
                             value={this.state.name}
                             error={errors.name}
                             type="text"
                             id="name"
                             placeholder={errors.name}
+                            className={classnames("", {
+                                invalid: errors.name
+                            })}
                         />
-                        <p style={{ color: 'red' }}>{errors.name}</p>
+
+                        <span className="red-text">{errors.name}</span>
+
                         <label>Email</label>
                         <input
-                            className="form-control"
                             onChange={this.onChange}
                             value={this.state.email}
                             error={errors.email}
                             type="text"
                             id="email"
                             placeholder={errors.email}
+                            className={classnames("", {
+                                invalid: errors.email
+                            })}
                         />
-                        <p style={{ color: 'red' }}>{errors.email}</p>
+                        <span className="red-text">{errors.email}</span>
                         <label>Password</label>
                         <input
-                            className="form-control"
                             onChange={this.onChange}
                             value={this.state.password}
                             error={errors.password}
                             type="password"
                             id="password"
+                            className={classnames("", {
+                                invalid: errors.email
+                            })}
                         />
-                        <p style={{ color: 'red' }}>{errors.password}</p>
+                        <span className="red-text">{errors.password}</span>
+
                         <label>Confirm Password</label>
                         <input
-                            className="form-control"
+                            className={classnames("", {
+                                invalid: errors.password2
+                            })}
                             onChange={this.onChange}
                             value={this.state.password2}
                             error={errors.password2}
                             type="password"
                             id="password2"
                         />
-                        <p style={{ color: 'red' }}>{errors.password2}</p>
+                        <span className="red-text">{errors.passwor2}</span>
+
                         <label>Domain</label>
                         <select className="form-control" id="domain">
                             <option>User</option>
@@ -122,3 +150,16 @@ export default class Login extends Component {
         );
     }
 }
+SignUp.propTypes = {
+    registerUser: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
+    errors: PropTypes.object.isRequired
+};
+const mapStateToProps = state => ({
+    auth: state.auth,
+    errors: state.errors
+});
+export default connect(
+    mapStateToProps,
+    { signUpUser }
+)(withRouter(SignUp));
