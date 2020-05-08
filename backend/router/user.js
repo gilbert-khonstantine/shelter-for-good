@@ -2,12 +2,16 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const fs = require("fs")
 const keys = "secret"
-// Load input validation
+// Load validations
 const validateRegistration = require("../validation/register");
 const validateLogin = require("../validation/login");
+const validateUserUpload = require("../validation/userUpload")
 // Load User model
 const User = require("../models/user-model");
+// Load Upload model
+const userUpload = require("../models/userUpload-model")
 
 
 router.post("/signup", (req, res) => {
@@ -68,7 +72,7 @@ router.post("/login", (req, res) => {
                     keys,
                     {
                         // expiresIn: 31556926 // 1 year in seconds
-                        expiresIn: 10 // 1 hr in seconds
+                        expiresIn: 3600 // 1 hr in seconds
                     },
                     (err, token) => {
                         return res.status(200).json({
@@ -88,5 +92,33 @@ router.post("/login", (req, res) => {
     })
 })
 
+
+router.post("/upload", (req, res) => {
+    console.log(req.file)
+    const { errors, isValid } = validateUserUpload(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors)
+    } else {
+        const newUpload = new userUpload({
+            address: req.body.address,
+            zipCode: req.body.zipCode,
+            personID: req.body.personID,
+            coordinates: req.body.viewport,
+            date: req.body.date,
+            description: req.body.description
+        })
+
+        if (req.body.photo && req.body.photo.length > 0) {
+            console.log("img sent")
+            console.log(req.body.photo)
+            newUpload.img.data = fs.readFileSync(req.body.photo.path)
+            newUpload.img.contentType = "image/png";
+        }
+        newUpload
+            .save()
+            .then(upload => res.json(upload))
+            .catch(err => console.log(err));
+    }
+})
 
 module.exports = router
