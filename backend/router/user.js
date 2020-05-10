@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const fs = require("fs")
+const path = require("path");
 const keys = "secret"
 // Load validations
 const validateRegistration = require("../validation/register");
@@ -13,7 +14,7 @@ const User = require("../models/user-model");
 // Load Upload model
 const userUpload = require("../models/userUpload-model")
 
-
+// to ensure user can sign up
 router.post("/signup", (req, res) => {
     const { errors, isValid } = validateRegistration(req.body);
     // make sure input is correct
@@ -47,6 +48,7 @@ router.post("/signup", (req, res) => {
 
 })
 
+// to ensure user can login
 router.post("/login", (req, res) => {
     const { errors, isValid } = validateLogin(req.body);
     if (!isValid) {
@@ -92,7 +94,7 @@ router.post("/login", (req, res) => {
     })
 })
 
-
+// this is to handle user form input and store it in our db
 router.post("/upload", (req, res) => {
     console.log(req.file)
     const { errors, isValid } = validateUserUpload(req.body);
@@ -105,20 +107,39 @@ router.post("/upload", (req, res) => {
             personID: req.body.personID,
             coordinates: req.body.viewport,
             date: req.body.date,
-            description: req.body.description
+            description: req.body.description,
+            imgPath: req.body.imgPath
         })
-
-        if (req.body.photo && req.body.photo.length > 0) {
-            console.log("img sent")
-            console.log(req.body.photo)
-            newUpload.img.data = fs.readFileSync(req.body.photo.path)
-            newUpload.img.contentType = "image/png";
-        }
         newUpload
             .save()
             .then(upload => res.json(upload))
             .catch(err => console.log(err));
     }
 })
+
+// upload image to "../router/uploads". in the db we only specify the path of the image.
+var multer = require('multer')
+var storage = multer.diskStorage({
+    destination: path.join(__dirname, "uploads"),
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + '-' + file.originalname)
+    }
+})
+
+var upload = multer({ storage: storage }).single('file')
+
+router.post('/imageUploads', function (req, res) {
+
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err)
+        } else if (err) {
+            return res.status(500).json(err)
+        }
+        return res.status(200).send(req.file)
+
+    })
+
+});
 
 module.exports = router

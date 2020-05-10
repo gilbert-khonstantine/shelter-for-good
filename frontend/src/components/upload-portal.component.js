@@ -35,9 +35,10 @@ export default class uploadPage extends Component {
             zipCode: "",
             date: "",
             description: "",
-            photo: "",
+            file: null,
             viewport: {},
             personID: "",
+            imgPath: ""
         }
     }
 
@@ -48,7 +49,7 @@ export default class uploadPage extends Component {
     }
 
     onPhotoChange(e) {
-        this.setState({ photo: e.target.files[0] });
+        this.setState({ file: e.target.files[0] });
     };
 
     OnChangeZip(e) {
@@ -78,28 +79,34 @@ export default class uploadPage extends Component {
         });
     }
 
-    handleSubmit(e) {
+    async handleSubmit(e) {
         e.preventDefault()
         console.log(`Form submitted:`);
         console.log(this.state);
-        let formData = new FormData();
         // Update the formData object 
-        if (this.state.photo != null) {
-            formData.append(
-                "myFile",
-                this.state.photo,
-                this.state.photo.name
-            );
+        if (this.state.file != null) {
+            const data = new FormData()
+            data.append('file', this.state.file)
+            console.log("file data", data)
+
+            await axios.post("/api/user/imageUploads", data, {})
+                .then((res) => {
+                    console.log(res.statusText)
+                    this.setState({
+                        imgPath: res.data.path
+                    })
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
         }
 
-        axios.post("http://localhost:4000/api/user/upload", this.state)
+        axios.post("/api/user/upload", this.state)
             .then((res) => {
-                console.log("POST request sent!")
-                console.log(res)
+                console.log(res.statusText)
             })
             .catch((err) => {
                 console.log(err)
-                console.log(err.response)
             })
 
         this.setState({
@@ -107,12 +114,13 @@ export default class uploadPage extends Component {
             zipcode: "",
             date: "",
             description: "",
-            photo: ""
+            imgPath: "",
+            file: null
         });
     }
 
     onFileChange(e) {
-        this.setState({ photo: e.target.files[0] })
+        this.setState({ file: e.target.files[0] })
     }
 
     render() {

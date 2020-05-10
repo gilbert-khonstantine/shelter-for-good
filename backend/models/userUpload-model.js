@@ -17,9 +17,8 @@ const userUploadSchema = new Schema({
         type: String,
         require: true
     },
-    img: {
-        data: Buffer,
-        contentType: String
+    imgPath: {
+        type: String
     },
     date: {
         type: Date,
