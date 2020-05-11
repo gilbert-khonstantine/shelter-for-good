@@ -20,7 +20,7 @@ function Uploads(props) {
             <td>
                 <Link to={"/user/historical-uploads/edit/" + props.uploads._id}>Details/Edit</Link>
                 <br />
-                <a onClick={onDelete} href={"/"}>Remove</a>
+                <a onClick={onDelete} href={"/user/historical-uploads"}>Remove</a>
             </td>
         </tr>
     )

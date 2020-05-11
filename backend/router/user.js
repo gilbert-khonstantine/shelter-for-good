@@ -153,4 +153,20 @@ router.get("/getUploads/:id", (req, res) => {
     })
 })
 
+router.delete("/removeUploads/:id", (req, res) => {
+    userUpload.findById(req.params.id, (err, data) => {
+        if (!data) {
+            res.json("ID not available")
+        } else {
+            data.remove()
+                .then(res => {
+                    res.json("Data removed!")
+                })
+                .catch(err => {
+                    res.json(err)
+                })
+        }
+    })
+})
+
 module.exports = router
