@@ -158,6 +158,9 @@ router.delete("/removeUploads/:id", (req, res) => {
         if (!data) {
             res.json("ID not available")
         } else {
+            if (data.imgPath) {
+                fs.unlinkSync(path.join(__dirname, "../../frontend/src/uploads", data.imgPath))
+            }
             data.remove()
                 .then(res => {
                     res.json("Data removed!")

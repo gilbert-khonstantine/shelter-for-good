@@ -93,7 +93,7 @@ export default class uploadPage extends Component {
                 .then((res) => {
                     console.log(res.statusText)
                     this.setState({
-                        imgPath: res.data.path
+                        imgPath: res.data.filename
                     })
                 })
                 .catch((err) => {
