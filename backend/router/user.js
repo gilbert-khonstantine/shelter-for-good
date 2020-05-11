@@ -120,7 +120,8 @@ router.post("/upload", (req, res) => {
 // upload image to "../router/uploads". in the db we only specify the path of the image.
 var multer = require('multer')
 var storage = multer.diskStorage({
-    destination: path.join(__dirname, "uploads"),
+    // destination: path.join(__dirname, "uploads"),
+    destination: path.join(__dirname, "../../frontend/src", "uploads"),
     filename: function (req, file, cb) {
         cb(null, Date.now() + '-' + file.originalname)
     }
@@ -141,5 +142,15 @@ router.post('/imageUploads', function (req, res) {
     })
 
 });
+
+router.get("/getUploads/:id", (req, res) => {
+    userUpload.find({ "personID": req.params.id }, (err, data) => {
+        if (!data) {
+            res.status(404).json("ID have not upload any information")
+        } else {
+            res.json(data)
+        }
+    })
+})
 
 module.exports = router
