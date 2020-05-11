@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { Route, Switch, BrowserRouter } from 'react-router-dom'
+import { BrowserRouter } from 'react-router-dom'
 import Geocoder from 'react-mapbox-gl-geocoder'
 import axios from 'axios'
+import path from 'path'
 
 const mapAccess = {
     // mapboxApiAccessToken: process.env.REACT_APP_MAPBOX_API_ACCESS_TOKEN
@@ -38,7 +39,8 @@ export default class editUpload extends Component {
             file: null,
             viewport: {},
             personID: "",
-            imgPath: ""
+            imgPath: "",
+            id: ""
         }
     }
 
@@ -79,20 +81,22 @@ export default class editUpload extends Component {
         });
     }
 
-    componentDidMount() {
-        axios.get('/api/user/getUpload/' + this.props.match.params.id)
+    async componentWillMount() {
+        await axios.get('/api/user/getUpload/' + this.props.match.params.id)
             .then((res) => {
-                console.log("API IN")
                 this.setState({
                     address: res.data[0].address,
                     date: res.data[0].date,
                     description: res.data[0].description,
                     zipCode: res.data[0].zipCode,
                     imgPath: res.data[0].imgPath,
-                    personID: res.data[0].personID
+                    personID: res.data[0].personID,
+                    id: res.data[0]._id
                 })
-                console.log(res.data[0])
                 console.log(this.state)
+                console.log("img path")
+                console.log(this.state.imgPath)
+                // console.log(path.join(path.dirname, "uploads", this.state.imgPath))
             })
             .catch((err) => {
                 console.log(err);
@@ -121,7 +125,7 @@ export default class editUpload extends Component {
                 })
         }
 
-        axios.post("/api/user/upload", this.state)
+        axios.post("/api/user/edit/" + this.state.id, this.state)
             .then((res) => {
                 console.log(res.statusText)
             })
@@ -150,10 +154,6 @@ export default class editUpload extends Component {
                     <h3>Upload</h3>
                     <form onSubmit={this.handleSubmit}>
                         <div className="form-group">
-                            {/* <Switch>
-                                <Route exact path="/user/upload" component={Map} />
-                                <Route exact path="/user/upload" component={SearchableMap} />
-                            </Switch> */}
                             <p>Type here to autofill your location</p>
                             <Geocoder
                                 {...mapAccess} onSelected={this.onSelected} hideOnSelect={false}
@@ -181,7 +181,7 @@ export default class editUpload extends Component {
                         <div className="form-group">
                             <label>Photo</label>
                             <br />
-                            {/* <img src={require("../uploads/" + this.state.imgPath.replace('"', ""))} /> */}
+                            {this.state.imgPath ? <img src={require("../uploads/" + this.state.imgPath)} /> : "No image was posted"}
                         </div>
                         <div className="form-group">
                             <input type="file" onChange={this.onFileChange} />

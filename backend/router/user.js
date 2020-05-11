@@ -172,6 +172,9 @@ router.post("/edit/:id", (req, res) => {
             if (!data) {
                 res.status(404).send("Id does not exist")
             } else {
+                if (req.body.imgPath) {
+                    fs.unlinkSync(path.join(__dirname, "../../frontend/src/uploads", data.imgPath))
+                }
                 data.address = req.body.address;
                 data.zipCode = req.body.zipCode;
                 data.personID = req.body.personID;
@@ -180,8 +183,8 @@ router.post("/edit/:id", (req, res) => {
                 data.description = req.body.description;
                 data.imgPath = req.body.imgPath;
                 data.save()
-                    .then(res => res.json("Updated!"))
-                    .catch(err => res.json(err));
+                    .then(res => { res.json("Updated!") })
+                    .catch(err => { res.json(err) });
             }
         })
     }
