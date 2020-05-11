@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import aboutUsPage from "./components/about-us.component"
 import uploadPage from "./components/upload-portal.component"
 import historicalPage from "./components/historical-upload.component"
+import editUpload from "./components/edit-uploads.component"
 
 function User() {
     function logOut() {
@@ -39,6 +40,7 @@ function User() {
                 <Route path="/user/about-us" component={aboutUsPage} />
                 <Route path="/user/upload" component={uploadPage} />
                 <Route path="/user/historical-uploads" component={historicalPage} />
+                <Route path="/user/edit/:id" component={editUpload} />
             </div>
         </Router>
     );

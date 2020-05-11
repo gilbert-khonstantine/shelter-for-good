@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from "react-router-dom";
-
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import editUpload from "./edit-uploads.component"
 function Uploads(props) {
     function onDelete(e) {
         e.preventDefault();
@@ -18,7 +19,7 @@ function Uploads(props) {
             <td>{props.uploads.description}</td>
             {/* <td>{props.uploads.imgPath ? <Link to={require("../uploads/1589183504824-MLA_result.png")}>  View </Link> : "No Image Posted"}</td> */}
             <td>
-                <Link to={"/user/historical-uploads/edit/" + props.uploads._id}>Details/Edit</Link>
+                <Link to={"/user/edit/" + props.uploads._id}>Details/Edit</Link>
                 <br />
                 <a onClick={onDelete} href={"/user/historical-uploads"}>Remove</a>
             </td>

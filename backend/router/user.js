@@ -153,6 +153,40 @@ router.get("/getUploads/:id", (req, res) => {
     })
 })
 
+router.get("/getUpload/:id", (req, res) => {
+    userUpload.find({ "_id": req.params.id }, (err, data) => {
+        if (!data) {
+            res.status(404).json("ID have not upload any information")
+        } else {
+            res.json(data)
+        }
+    })
+})
+
+router.post("/edit/:id", (req, res) => {
+    const { errors, isValid } = validateUserUpload(req.body);
+    if (!isValid) {
+        return res.status(400).json(errors)
+    } else {
+        userUpload.findById(req.params.id, (err, data) => {
+            if (!data) {
+                res.status(404).send("Id does not exist")
+            } else {
+                data.address = req.body.address;
+                data.zipCode = req.body.zipCode;
+                data.personID = req.body.personID;
+                data.coordinates = req.body.viewport;
+                data.date = req.body.date;
+                data.description = req.body.description;
+                data.imgPath = req.body.imgPath;
+                data.save()
+                    .then(res => res.json("Updated!"))
+                    .catch(err => res.json(err));
+            }
+        })
+    }
+})
+
 router.delete("/removeUploads/:id", (req, res) => {
     userUpload.findById(req.params.id, (err, data) => {
         if (!data) {

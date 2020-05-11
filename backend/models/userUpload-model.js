@@ -21,7 +21,7 @@ const userUploadSchema = new Schema({
         type: String
     },
     date: {
-        type: Date,
+        type: String,
         require: true
     },
     coordinates: {
