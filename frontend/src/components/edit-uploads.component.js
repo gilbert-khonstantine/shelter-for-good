@@ -56,7 +56,7 @@ export default class editUpload extends Component {
 
     OnChangeZip(e) {
         this.setState({
-            zipcode: e.target.value
+            zipCode: e.target.value
         });
     }
 
@@ -91,7 +91,8 @@ export default class editUpload extends Component {
                     zipCode: res.data[0].zipCode,
                     imgPath: res.data[0].imgPath,
                     personID: res.data[0].personID,
-                    id: res.data[0]._id
+                    id: res.data[0]._id,
+                    file: res.data[0].file
                 })
                 console.log(this.state)
                 console.log("img path")
@@ -144,7 +145,9 @@ export default class editUpload extends Component {
     }
 
     onFileChange(e) {
-        this.setState({ file: e.target.files[0] })
+        this.setState({
+            file: e.target.files[0]
+        })
     }
 
     render() {
@@ -153,28 +156,30 @@ export default class editUpload extends Component {
                 <div className="container">
                     <h3>Upload</h3>
                     <form onSubmit={this.handleSubmit}>
-                        <div className="form-group">
-                            <p>Type here to autofill your location</p>
-                            <Geocoder
-                                {...mapAccess} onSelected={this.onSelected} hideOnSelect={false}
-                                queryParams={queryParams} viewport={this.state.viewport}
-                            />
-                        </div>
+                        {localStorage.getItem("domain") === "admin" ? <br /> :
+                            <div className="form-group">
+                                <p>Type here to autofill your location</p>
+                                <Geocoder
+                                    {...mapAccess} onSelected={this.onSelected} hideOnSelect={false}
+                                    queryParams={queryParams} viewport={this.state.viewport}
+                                />
+                            </div>
+                        }
                         <div className="form-group">
                             <label>Address</label>
-                            <input type="text" className="form-control" value={this.state.address} onChange={this.OnChangeAddress} />
+                            <input type="text" className="form-control" value={this.state.address} onChange={this.OnChangeAddress} readOnly={localStorage.getItem("domain") === "admin" ? true : false} />
                         </div>
                         <div className="form-group">
                             <label>Zipcode</label>
-                            <input type="text" className="form-control" value={this.state.zipCode} onChange={this.OnChangeZip} />
+                            <input type="text" className="form-control" value={this.state.zipCode} onChange={this.OnChangeZip} readOnly={localStorage.getItem("domain") === "admin" ? true : false} />
                         </div>
                         <div className="form-group">
                             <label>Date</label>
-                            <input type="date" className="form-control" value={this.state.date} onChange={this.OnChangeDate} />
+                            <input type="date" className="form-control" value={this.state.date} onChange={this.OnChangeDate} readOnly={localStorage.getItem("domain") === "admin" ? true : false} />
                         </div>
                         <div className="form-group">
                             <label>Description</label>
-                            <textarea id="story" className="form-control" value={this.state.description} onChange={this.OnChangeDescription}
+                            <textarea id="story" className="form-control" value={this.state.description} onChange={this.OnChangeDescription} readOnly={localStorage.getItem("domain") === "admin" ? true : false}
                                 rows="5" cols="50">
                             </textarea>
                         </div>
@@ -183,12 +188,17 @@ export default class editUpload extends Component {
                             <br />
                             {this.state.imgPath ? <img src={require("../uploads/" + this.state.imgPath)} /> : "No image was posted"}
                         </div>
-                        <div className="form-group">
-                            <input type="file" onChange={this.onFileChange} />
-                        </div>
-                        <div>
-                            <input type="submit" className="btn btn-primary" value="Submit" />
-                        </div>
+                        {/* <div className="form-group">
+
+                        </div> */}
+                        {localStorage.getItem("domain") === "admin" ? <br /> :
+                            <div>
+                                <input type="file" onChange={this.onFileChange} readOnly={localStorage.getItem("domain") === "admin" ? true : false} />
+                                <br />
+                                <br />
+                                <input type="submit" className="btn btn-primary" value="Submit" />
+                            </div>
+                        }
                     </form>
                 </div>
             </BrowserRouter>

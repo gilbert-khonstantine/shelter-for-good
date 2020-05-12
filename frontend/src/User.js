@@ -34,7 +34,6 @@ function User() {
                         </ul>
                     </div>
                 </nav>
-                <h1> Welcome to user page </h1>
 
                 {/* this is the main structure for the user  */}
                 <Route path="/user/about-us" component={aboutUsPage} />

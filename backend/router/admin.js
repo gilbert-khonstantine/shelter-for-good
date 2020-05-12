@@ -8,6 +8,10 @@ const validateRegistration = require("../validation/register");
 const validateLogin = require("../validation/login");
 // Load User model
 const Admin = require("../models/admin-model");
+// Load User model
+const User = require("../models/user-model");
+// Load Upload model
+const userUpload = require("../models/userUpload-model")
 
 
 router.post("/signup", (req, res) => {
@@ -84,6 +88,26 @@ router.post("/login", (req, res) => {
                     .json({ passwordincorrect: "Password incorrect" });
             }
         });
+    })
+})
+
+router.get("/getAllUploads", (req, res) => {
+    userUpload.find({}, (err, data) => {
+        if (!data) {
+            res.status(404).json("error")
+        } else {
+            res.json(data)
+        }
+    })
+})
+
+router.get("/getAllUsers", (req, res) => {
+    User.find({}, (err, user) => {
+        if (!user) {
+            res.status(404).json("No User in database")
+        } else {
+            res.status(200).json(user)
+        }
     })
 })
 

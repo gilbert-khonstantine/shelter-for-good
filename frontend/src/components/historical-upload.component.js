@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from "react-router-dom";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import editUpload from "./edit-uploads.component"
+
 function Uploads(props) {
     function onDelete(e) {
         e.preventDefault();
@@ -57,7 +56,7 @@ export default class historicalUploads extends Component {
         this.getDataFromDB()
     }
 
-    getToDoList() {
+    getUploads() {
         return this.state.uploads.map(function (upload, i) {
             return <Uploads uploads={upload} key={i} />
         })
@@ -65,7 +64,7 @@ export default class historicalUploads extends Component {
 
     render() {
         return (
-            <div>
+            <div className="container">
                 <h1>Historical Submissions</h1>
                 <table className="table table-striped">
                     <thead>
@@ -78,7 +77,7 @@ export default class historicalUploads extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.getToDoList()}
+                        {this.getUploads()}
                     </tbody>
                 </table>
             </div>

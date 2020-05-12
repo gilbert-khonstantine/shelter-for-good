@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 import dashboardPage from "./components/dashboard.component";
 import shelterPage from "./components/shelter-list.component"
-
+import detailedPage from "./components/edit-uploads.component"
 function Admin() {
   function logOut() {
     localStorage.clear()
@@ -30,11 +30,11 @@ function Admin() {
             </ul>
           </div>
         </nav>
-        <h1> Welcome to admin page </h1>
 
         {/* this is the main structure for the user  */}
         <Route path="/admin/dashboard" component={dashboardPage} />
         <Route path="/admin/shelterList" component={shelterPage} />
+        <Route path="/admin/view/:id" component={detailedPage} />
       </div>
     </Router>
   );

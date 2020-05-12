@@ -172,9 +172,10 @@ router.post("/edit/:id", (req, res) => {
             if (!data) {
                 res.status(404).send("Id does not exist")
             } else {
-                if (req.body.imgPath) {
-                    fs.unlinkSync(path.join(__dirname, "../../frontend/src/uploads", data.imgPath))
-                }
+                //this means that the image will always be stored but it will not be visible to user. Also, once attached, user can only change the pic but cant delete what has been posted (maybe next can try to add a delete attachment function)
+                // if (req.body.imgPath) {
+                //     fs.unlinkSync(path.join(__dirname, "../../frontend/src/uploads", data.imgPath))
+                // }
                 data.address = req.body.address;
                 data.zipCode = req.body.zipCode;
                 data.personID = req.body.personID;
