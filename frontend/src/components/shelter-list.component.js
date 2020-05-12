@@ -56,8 +56,9 @@ export default class shelterPage extends Component {
                     uploadTemp[i]['email'] = emailIDPair[upload.personID]
                 })
                 this.setState({
-                    uploads: res.data
+                    uploads: uploadTemp
                 })
+                console.log(this.state.uploads)
             })
             .catch(err => {
                 console.log(err)

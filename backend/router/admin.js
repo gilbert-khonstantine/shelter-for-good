@@ -92,7 +92,7 @@ router.post("/login", (req, res) => {
 })
 
 router.get("/getAllUploads", (req, res) => {
-    userUpload.find({}, (err, data) => {
+    userUpload.find({ personID: { $exists: true } }, (err, data) => {
         if (!data) {
             res.status(404).json("error")
         } else {
